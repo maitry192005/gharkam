@@ -193,8 +193,11 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => {
-  console.log(`🚀 GharKaam Backend Server running on http://localhost:${PORT} [${process.env.NODE_ENV || 'development'}]`);
-});
+let server = null;
+if (!process.env.VERCEL) {
+  server = app.listen(PORT, () => {
+    console.log(`🚀 GharKaam Backend Server running on http://localhost:${PORT} [${process.env.NODE_ENV || 'development'}]`);
+  });
+}
 
 module.exports = { app, server };
