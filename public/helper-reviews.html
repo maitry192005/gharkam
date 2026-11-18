@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Ratings & Reviews | GharKaam</title>
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body class="bg-light">
+
+  <header id="navbar-placeholder"></header>
+
+  <div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+      <div class="d-flex align-items-center gap-3 px-3 py-2 mb-2">
+        <div id="helperSideAvatarContainer"><div class="avatar-circle">GK</div></div>
+        <div class="overflow-hidden">
+          <div class="fw-bold text-truncate" id="helperSideName">Helper</div>
+          <div class="text-muted small">Service Partner</div>
+        </div>
+      </div>
+      <hr class="my-2 text-muted">
+      <nav class="d-flex flex-column gap-1">
+        <a href="/helper-dashboard.html" class="sidebar-nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="/helper-requests.html" class="sidebar-nav-item"><i class="bi bi-inbox-fill"></i> Requests & Jobs</a>
+        <a href="/helper-schedule.html" class="sidebar-nav-item"><i class="bi bi-calendar-week"></i> My Schedule</a>
+        <a href="/helper-services.html" class="sidebar-nav-item"><i class="bi bi-gear-wide-connected"></i> Services & Rates</a>
+        <a href="/helper-earnings.html" class="sidebar-nav-item"><i class="bi bi-cash-stack text-success"></i> Earnings & Payouts</a>
+        <a href="/helper-reviews.html" class="sidebar-nav-item active"><i class="bi bi-star-fill text-warning"></i> Customer Reviews</a>
+        <a href="/helper-profile-edit.html" class="sidebar-nav-item"><i class="bi bi-person-badge"></i> Profile Details</a>
+        <a href="/notifications.html" class="sidebar-nav-item"><i class="bi bi-bell"></i> Notifications</a>
+        <button type="button" class="sidebar-nav-item border-0 bg-transparent text-danger mt-3" onclick="api.logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+      </nav>
+    </aside>
+
+    <main class="dashboard-content">
+      <h2 class="h3 fw-bold mb-1">Customer Reviews & Ratings</h2>
+      <p class="text-muted small mb-4">Feedback left by households after completed service tasks.</p>
+
+      <div class="row g-4">
+        <!-- Rating Summary Card -->
+        <div class="col-lg-4">
+          <div class="gk-card p-4 text-center">
+            <span class="text-muted small fw-semibold text-uppercase">Overall Score</span>
+            <div class="display-4 fw-bold text-dark mt-2" id="avgRatingDisplay">5.0</div>
+            <div class="stars-rating fs-4 mb-2">
+              <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+            </div>
+            <div class="text-muted small" id="totalReviewsCount">Based on 0 verified reviews</div>
+            <div class="mt-4 p-3 bg-light rounded text-muted small text-start">
+              <i class="bi bi-info-circle text-primary me-1"></i> Maintaining an average rating above 4.5 boosts your profile visibility in top search results.
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Feed Column -->
+        <div class="col-lg-8">
+          <div class="gk-card p-4">
+            <h5 class="fw-bold mb-3">All Feedback Received</h5>
+            <div id="helperReviewsList">
+              <div class="text-center py-5 text-muted small">Loading reviews...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer id="footer-placeholder"></footer>
+
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/helper-reviews.js"></script>
+</body>
+</html>

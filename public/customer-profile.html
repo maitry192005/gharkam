@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile & Settings | GharKaam</title>
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body class="bg-light">
+
+  <header id="navbar-placeholder"></header>
+
+  <div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+      <div class="d-flex align-items-center gap-3 px-3 py-2 mb-2">
+        <div id="sideAvatarContainer"><div class="avatar-circle">GK</div></div>
+        <div class="overflow-hidden">
+          <div class="fw-bold text-truncate" id="sideUserName">Customer</div>
+          <div class="text-muted small">Customer Account</div>
+        </div>
+      </div>
+      <hr class="my-2 text-muted">
+      <nav class="d-flex flex-column gap-1">
+        <a href="/customer-dashboard.html" class="sidebar-nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="/book.html" class="sidebar-nav-item"><i class="bi bi-calendar-plus text-success"></i> Book a Helper</a>
+        <a href="/my-bookings.html" class="sidebar-nav-item"><i class="bi bi-calendar-check"></i> My Bookings</a>
+        <a href="/saved-helpers.html" class="sidebar-nav-item"><i class="bi bi-heart text-danger"></i> Saved Helpers</a>
+        <a href="/customer-profile.html" class="sidebar-nav-item active"><i class="bi bi-person-gear"></i> Profile & Settings</a>
+        <a href="/notifications.html" class="sidebar-nav-item"><i class="bi bi-bell"></i> Notifications</a>
+        <button type="button" class="sidebar-nav-item border-0 bg-transparent text-danger mt-3" onclick="api.logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+      </nav>
+    </aside>
+
+    <main class="dashboard-content">
+      <h2 class="h3 fw-bold mb-1">Account & Household Profile</h2>
+      <p class="text-muted small mb-4">Manage your personal information, saved addresses, password, and referral program rewards.</p>
+
+      <div class="row g-4">
+        <!-- Profile Details Form -->
+        <div class="col-lg-8">
+          <div class="gk-card p-4 mb-4">
+            <h5 class="fw-bold mb-3">Personal Details</h5>
+            <div id="profileAlert" class="alert d-none mb-3"></div>
+
+            <form id="profileEditForm" enctype="multipart/form-data">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="profFullName" class="form-label small fw-semibold">Full Name</label>
+                  <input type="text" class="form-control" id="profFullName" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="profPhone" class="form-label small fw-semibold">Phone Number</label>
+                  <input type="tel" class="form-control" id="profPhone" required pattern="^[6-9]\d{9}$">
+                </div>
+                <div class="col-md-6">
+                  <label for="profEmail" class="form-label small fw-semibold">Email (Non-editable)</label>
+                  <input type="email" class="form-control" id="profEmail" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="profGender" class="form-label small fw-semibold">Gender</label>
+                  <select class="form-select" id="profGender">
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="profDistrict" class="form-label small fw-semibold">District / City</label>
+                  <input type="text" class="form-control" id="profDistrict" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="profState" class="form-label small fw-semibold">State</label>
+                  <input type="text" class="form-control" id="profState" required>
+                </div>
+                <div class="col-12">
+                  <label for="profAddressLine" class="form-label small fw-semibold">Street Address</label>
+                  <input type="text" class="form-control" id="profAddressLine" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="profPincode" class="form-label small fw-semibold">Pincode</label>
+                  <input type="text" class="form-control" id="profPincode" required pattern="^[1-9][0-9]{5}$">
+                </div>
+                <div class="col-md-6">
+                  <label for="profAvatarFile" class="form-label small fw-semibold">Update Avatar Photo</label>
+                  <input type="file" class="form-control" id="profAvatarFile" accept="image/jpeg,image/png,image/webp">
+                </div>
+                <div class="col-12 pt-2">
+                  <button type="submit" class="btn btn-brand-primary btn-sm px-4 fw-bold" id="saveProfBtn">
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Change Password -->
+          <div class="gk-card p-4">
+            <h5 class="fw-bold mb-3">Change Password</h5>
+            <div id="passwordAlert" class="alert d-none mb-3"></div>
+
+            <form id="changePasswordForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="currentPassword" class="form-label small fw-semibold">Current Password</label>
+                  <input type="password" class="form-control" id="currentPassword" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="newPassword" class="form-label small fw-semibold">New Password</label>
+                  <input type="password" class="form-control" id="newPassword" required minlength="6">
+                </div>
+                <div class="col-12 pt-2">
+                  <button type="submit" class="btn btn-brand-outline btn-sm px-4 fw-bold" id="changePassBtn">
+                    Update Password
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Referral Card & Saved Addresses -->
+        <div class="col-lg-4">
+          <!-- Referral Card -->
+          <div class="gk-card p-4 mb-4 border-start border-4 border-success">
+            <div class="d-flex align-items-center gap-2 mb-2 text-success">
+              <i class="bi bi-gift-fill fs-5"></i>
+              <span class="fw-bold">Referral Program</span>
+            </div>
+            <p class="small text-muted mb-3">
+              Share your referral code with friends or neighbors. Both of you get <strong>₹50 wallet rewards</strong> when they join!
+            </p>
+            <div class="p-2 bg-light rounded text-center mb-3">
+              <span class="small text-muted d-block">Your Personal Code:</span>
+              <span class="fs-4 fw-bold text-success font-monospace" id="displayReferralCode">CODE</span>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-success w-100 fw-bold" onclick="copyReferralLink()">
+              <i class="bi bi-clipboard me-1"></i> Copy Referral Link
+            </button>
+          </div>
+
+          <!-- Saved Addresses Box -->
+          <div class="gk-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">Saved Addresses</h5>
+              <button class="btn btn-sm btn-outline-primary" onclick="openAddressModal()">+ Add</button>
+            </div>
+            <div id="savedAddressesList" class="d-flex flex-column gap-2 small">
+              <div class="text-muted text-center py-2">Loading addresses...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Address Modal -->
+  <div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Add New Saved Address</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="addAddressForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="addrTitle" class="form-label small fw-semibold">Address Label</label>
+              <input type="text" class="form-control form-control-sm" id="addrTitle" required placeholder="e.g. Home, Parents Villa, Office">
+            </div>
+            <div class="mb-3">
+              <label for="addrLine" class="form-label small fw-semibold">Street Address</label>
+              <input type="text" class="form-control form-control-sm" id="addrLine" required placeholder="Flat / House / Road">
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label for="addrDistrict" class="form-label small fw-semibold">District</label>
+                <input type="text" class="form-control form-control-sm" id="addrDistrict" required>
+              </div>
+              <div class="col-6">
+                <label for="addrState" class="form-label small fw-semibold">State</label>
+                <input type="text" class="form-control form-control-sm" id="addrState" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="addrPincode" class="form-label small fw-semibold">Pincode</label>
+              <input type="text" class="form-control form-control-sm" id="addrPincode" required pattern="^[1-9][0-9]{5}$">
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="addrIsDefault">
+              <label class="form-check-label small" for="addrIsDefault">Set as default booking address</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-brand-primary btn-sm">Save Address</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer id="footer-placeholder"></footer>
+
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/customer-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Details | GharKaam</title>
+  <meta name="description" content="View domestic service details, inclusions, rates, FAQs, and hire background-verified helpers.">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body>
+
+  <!-- Universal Navbar -->
+  <header id="navbar-placeholder"></header>
+
+  <main class="py-5">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb small">
+          <li class="breadcrumb-item"><a href="/index.html" class="text-decoration-none text-muted">Home</a></li>
+          <li class="breadcrumb-item"><a href="/services.html" class="text-decoration-none text-muted">Services</a></li>
+          <li class="breadcrumb-item active text-success fw-semibold" id="breadcrumbServiceName" aria-current="page">Service Detail</li>
+        </ol>
+      </nav>
+
+      <!-- Main Detail View (Loaded via service-detail.js) -->
+      <div id="serviceDetailContainer">
+        <div class="text-center py-5">
+          <div class="spinner-border text-success" role="status"></div>
+          <p class="text-muted small mt-2">Loading service information...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Universal Footer -->
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/service-detail.js"></script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Helper | GharKaam</title>
+  <meta name="description" content="Book verified domestic cooks, maids, plumbers, and electricians. Transparent pricing, safe online or cash payment.">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body class="bg-light">
+
+  <header id="navbar-placeholder"></header>
+
+  <main class="py-5">
+    <div class="container" style="max-width: 900px;">
+      <div class="text-center mb-4">
+        <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill mb-2">Booking Wizard</span>
+        <h1 class="h2 fw-bold">Schedule Your Domestic Service</h1>
+        <p class="text-muted small">Select your requirements, choose a verified helper, and confirm your booking with transparent pricing.</p>
+      </div>
+
+      <div id="bookingAlert" class="alert d-none mb-4" role="alert"></div>
+
+      <div class="row g-4">
+        <!-- Left: Form Steps -->
+        <div class="col-lg-8">
+          <form id="bookingWizardForm" novalidate>
+            <!-- Step 1: Services Selection -->
+            <div class="gk-card p-4 mb-4">
+              <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle">1</span> Select Required Services <span class="text-danger">*</span>
+              </h5>
+              <div class="row g-3" id="servicesCheckboxGrid">
+                <div class="col-12 text-center py-3">
+                  <div class="spinner-border spinner-border-sm text-success"></div>
+                  <span class="small text-muted ms-2">Loading services...</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Choose Helper -->
+            <div class="gk-card p-4 mb-4">
+              <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle">2</span> Choose Verified Helper <span class="text-danger">*</span>
+              </h5>
+              <div class="mb-3">
+                <select class="form-select" id="selectedHelper" required>
+                  <option value="">-- Choose an available helper --</option>
+                </select>
+                <div class="form-text small" id="helperSelectedDetails">Select a helper to view their ratings and customized rates.</div>
+              </div>
+            </div>
+
+            <!-- Step 3: Dates & Schedule -->
+            <div class="gk-card p-4 mb-4">
+              <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle">3</span> Service Schedule & Dates <span class="text-danger">*</span>
+              </h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="workFrom" class="form-label small fw-semibold">Start Date</label>
+                  <input type="date" class="form-control" id="workFrom" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="workTo" class="form-label small fw-semibold">End Date</label>
+                  <input type="date" class="form-control" id="workTo" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="preferredTime" class="form-label small fw-semibold">Preferred Time of Day</label>
+                  <select class="form-select" id="preferredTime">
+                    <option value="Morning (8:00 AM - 12:00 PM)">Morning (8:00 AM - 12:00 PM)</option>
+                    <option value="Afternoon (1:00 PM - 5:00 PM)">Afternoon (1:00 PM - 5:00 PM)</option>
+                    <option value="Evening (5:00 PM - 8:00 PM)">Evening (5:00 PM - 8:00 PM)</option>
+                    <option value="Flexible / Mutual Agreement">Flexible / Mutual Agreement</option>
+                  </select>
+                </div>
+                <div class="col-md-6 d-flex align-items-center">
+                  <div class="p-3 bg-light rounded-3 w-100">
+                    <span class="small text-muted">Total Calendar Duration:</span>
+                    <div class="fw-bold fs-5 text-success" id="calcDaysDisplay">1 day</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Emergency & Recurring Options -->
+              <div class="row g-3 mt-2 pt-3 border-top">
+                <div class="col-md-6">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isEmergencySwitch">
+                    <label class="form-check-label small fw-semibold" for="isEmergencySwitch">
+                      ⚡ Urgent / Same-Day Service (+₹200)
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="isRecurringSwitch">
+                    <label class="form-check-label small fw-semibold" for="isRecurringSwitch">
+                      🔁 Recurring Monthly Booking
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4: Cooking Specifications (Shown when Cooking is selected) -->
+            <div class="gk-card p-4 mb-4 d-none" id="cookingDetailsCard">
+              <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-egg-fried text-success"></i> Cooking Details
+              </h5>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="cookingPref" class="form-label small fw-semibold">Meal Preference</label>
+                  <select class="form-select" id="cookingPref">
+                    <option value="veg">Pure Vegetarian</option>
+                    <option value="both">Both Vegetarian & Non-Vegetarian</option>
+                    <option value="non-veg">Non-Vegetarian Only</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="cookingPeople" class="form-label small fw-semibold">Number of People to Cook For</label>
+                  <input type="number" class="form-control" id="cookingPeople" min="1" max="25" value="3">
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 5: Service Address -->
+            <div class="gk-card p-4 mb-4">
+              <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle">4</span> Service Address <span class="text-danger">*</span>
+              </h5>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label for="bookAddressLine" class="form-label small fw-semibold">Address / Apartment / House No</label>
+                  <input type="text" class="form-control" id="bookAddressLine" required placeholder="Flat 402, Sunshine Enclave">
+                </div>
+                <div class="col-md-4">
+                  <label for="bookLandmark" class="form-label small fw-semibold">Landmark</label>
+                  <input type="text" class="form-control" id="bookLandmark" placeholder="Near Park">
+                </div>
+                <div class="col-md-4">
+                  <label for="bookDistrict" class="form-label small fw-semibold">District / City</label>
+                  <input type="text" class="form-control" id="bookDistrict" required placeholder="e.g. South Delhi">
+                </div>
+                <div class="col-md-4">
+                  <label for="bookPincode" class="form-label small fw-semibold">Pincode</label>
+                  <input type="text" class="form-control" id="bookPincode" required pattern="^[1-9][0-9]{5}$" placeholder="110016">
+                </div>
+                <div class="col-12">
+                  <label for="bookNotes" class="form-label small fw-semibold">Special Instructions / Tasks Checklist</label>
+                  <textarea class="form-control" id="bookNotes" rows="2" placeholder="e.g. Please bring dusting cloths, non-spicy preparation..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 6: Payment Method Choice -->
+            <div class="gk-card p-4 mb-4">
+              <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle">5</span> Select Payment Method <span class="text-danger">*</span>
+              </h5>
+              <div class="d-flex flex-column gap-3">
+                <div class="form-check p-3 border rounded-3 bg-white">
+                  <input class="form-check-input" type="radio" name="paymentMethodRadio" id="payRazorpay" value="razorpay" checked>
+                  <label class="form-check-label fw-bold d-flex justify-content-between align-items-center w-100" for="payRazorpay">
+                    <span>
+                      <i class="bi bi-credit-card-2-front text-primary me-2"></i> Pay Online via Razorpay (Test Mode)
+                      <span class="d-block small text-muted fw-normal">UPI, Credit/Debit Cards, NetBanking. 100% Refund Guarantee.</span>
+                    </span>
+                    <span class="badge bg-primary">Recommended</span>
+                  </label>
+                </div>
+
+                <div class="form-check p-3 border rounded-3 bg-white">
+                  <input class="form-check-input" type="radio" name="paymentMethodRadio" id="payCash" value="cash">
+                  <label class="form-check-label fw-bold d-flex justify-content-between align-items-center w-100" for="payCash">
+                    <span>
+                      <i class="bi bi-cash-stack text-success me-2"></i> Pay After Service (Cash on Delivery)
+                      <span class="d-block small text-muted fw-normal">Zero advance payment. Hand over cash once the job is completed.</span>
+                    </span>
+                    <span class="badge bg-light text-dark border">Zero Advance</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" id="bookSubmitBtn" class="btn btn-brand-primary w-100 py-3 fw-bold fs-5 shadow">
+              <span id="btnText"><i class="bi bi-shield-lock-fill me-1"></i> Confirm & Proceed to Booking</span>
+              <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Pricing Summary Box -->
+        <div class="col-lg-4">
+          <div class="gk-card p-4 sticky-top shadow-sm" style="top: 100px;">
+            <h5 class="fw-bold mb-3 border-bottom pb-2">Price Breakdown</h5>
+
+            <div class="d-flex justify-content-between small text-muted mb-2">
+              <span>Daily Rate:</span>
+              <span class="fw-semibold text-dark" id="summaryDailyRate">₹0</span>
+            </div>
+
+            <div class="d-flex justify-content-between small text-muted mb-2">
+              <span>Duration:</span>
+              <span class="fw-semibold text-dark" id="summaryDuration">1 day</span>
+            </div>
+
+            <div class="d-flex justify-content-between small text-muted mb-2">
+              <span>Services Subtotal:</span>
+              <span class="fw-semibold text-dark" id="summarySubtotal">₹0</span>
+            </div>
+
+            <div class="d-flex justify-content-between small text-muted mb-2 d-none" id="summaryEmergencyRow">
+              <span>Emergency Surcharge:</span>
+              <span class="fw-semibold text-danger" id="summaryEmergency">₹200</span>
+            </div>
+
+            <div class="d-flex justify-content-between small text-muted mb-2">
+              <span>Platform Fee (5%):</span>
+              <span class="fw-semibold text-dark" id="summaryPlatformFee">₹0</span>
+            </div>
+
+            <div class="d-flex justify-content-between small text-muted mb-3">
+              <span>GST (18%):</span>
+              <span class="fw-semibold text-dark" id="summaryTax">₹0</span>
+            </div>
+
+            <!-- Coupon Code Input -->
+            <div class="mb-3 pt-3 border-top">
+              <label for="couponCodeInput" class="form-label small fw-semibold">Promo / Coupon Code</label>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control text-uppercase" id="couponCodeInput" placeholder="e.g. WELCOME50">
+                <button type="button" class="btn btn-outline-success fw-bold" id="applyCouponBtn">Apply</button>
+              </div>
+              <div id="couponMessage" class="small mt-1"></div>
+            </div>
+
+            <!-- Wallet Deduction Toggle -->
+            <div class="form-check form-switch mb-3 p-2 bg-light rounded-3" id="walletOptionBox">
+              <input class="form-check-input ms-0 me-2" type="checkbox" id="useWalletSwitch">
+              <label class="form-check-label small fw-bold text-success" for="useWalletSwitch">
+                <i class="bi bi-wallet2 me-1"></i> Apply Wallet Balance (<span id="availWalletSpan">₹50</span>)
+              </label>
+            </div>
+
+            <!-- Total Amount Card -->
+            <div class="p-3 rounded-3 bg-success bg-opacity-10 border border-success border-opacity-25 mt-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Total Payable:</span>
+                <span class="fs-4 fw-bolder text-success" id="summaryFinalTotal">₹0</span>
+              </div>
+              <div class="small text-muted mt-1" style="font-size: 0.75rem;">
+                Inclusive of all taxes & verified background security.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Razorpay Test SDK Checkout Modal -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/book.js"></script>
+</body>
+</html>

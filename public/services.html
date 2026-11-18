@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services Catalogue | GharKaam</title>
+  <meta name="description" content="Explore complete domestic home help services: home cooking, floor cleaning, utensil dishwashing, laundry, electrician, plumber, and caregiving.">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body>
+
+  <!-- Universal Navbar -->
+  <header id="navbar-placeholder"></header>
+
+  <main class="py-5">
+    <div class="container">
+      <!-- Page Header -->
+      <div class="text-center max-w-700 mx-auto mb-5">
+        <span class="badge bg-success bg-opacity-10 text-success fw-semibold px-3 py-2 rounded-pill mb-2">Service Directory</span>
+        <h1 class="display-5 fw-bold">Household Services Crafted for You</h1>
+        <p class="lead text-muted">
+          From healthy daily meals to spotless floor sanitization and quick electrical repairs. All delivered by background-verified neighborhood helpers.
+        </p>
+      </div>
+
+      <!-- Search & Filters Toolbar -->
+      <div class="gk-card p-4 mb-5">
+        <div class="row g-3 align-items-center">
+          <div class="col-lg-5">
+            <div class="input-group">
+              <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-search text-muted"></i></span>
+              <input type="text" id="serviceSearchInput" class="form-control border-start-0 ps-0" placeholder="Search services by name or description...">
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="d-flex flex-wrap gap-2 justify-content-lg-end" id="categoryFilterContainer">
+              <button class="btn btn-sm btn-brand-primary category-btn active" data-category="All">All Categories</button>
+              <button class="btn btn-sm btn-outline-secondary category-btn" data-category="Kitchen & Dining">Kitchen & Dining</button>
+              <button class="btn btn-sm btn-outline-secondary category-btn" data-category="Housekeeping">Housekeeping</button>
+              <button class="btn btn-sm btn-outline-secondary category-btn" data-category="Repairs & Maintenance">Repairs & Maintenance</button>
+              <button class="btn btn-sm btn-outline-secondary category-btn" data-category="Caregiving">Caregiving</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="row g-4" id="servicesGrid">
+        <div class="col-12 text-center py-5">
+          <div class="spinner-border text-success" role="status"></div>
+          <p class="text-muted small mt-2">Loading service catalogue...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Universal Footer -->
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/services.js"></script>
+</body>
+</html>

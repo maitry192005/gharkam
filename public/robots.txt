@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /customer-dashboard.html
+Disallow: /helper-dashboard.html
+Disallow: /book.html
+Disallow: /my-bookings.html
+Disallow: /booking-detail.html
+Disallow: /customer-profile.html
+Disallow: /helper-profile-edit.html
+Disallow: /helper-requests.html
+Disallow: /helper-schedule.html
+Disallow: /helper-services.html
+Disallow: /helper-earnings.html
+Disallow: /helper-reviews.html
+Disallow: /notifications.html
+
+Sitemap: http://localhost:3000/sitemap.xml

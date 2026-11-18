@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Verified Domestic Helpers | GharKaam</title>
+  <meta name="description" content="Browse and hire background verified domestic cooks, maids, house cleaners, plumbers, and electricians near your district. Transparent daily rates.">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body>
+
+  <!-- Universal Navbar -->
+  <header id="navbar-placeholder"></header>
+
+  <main class="py-5">
+    <div class="container">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+        <div>
+          <span class="badge bg-success bg-opacity-10 text-success fw-semibold px-3 py-1 rounded-pill mb-2">Verified Professionals</span>
+          <h1 class="h2 fw-bold mb-1">Browse Domestic Helpers</h1>
+          <p class="text-muted small mb-0">Search and book ID-verified helpers filtered by your household needs and locality.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <label for="helperSortSelect" class="small text-muted text-nowrap">Sort By:</label>
+          <select id="helperSortSelect" class="form-select form-select-sm" style="width: 180px;">
+            <option value="rating">Highest Rated</option>
+            <option value="jobs">Most Booked</option>
+            <option value="experience">Experience</option>
+            <option value="rate-asc">Lowest Daily Rate</option>
+            <option value="rate-desc">Highest Daily Rate</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Filter Sidebar -->
+        <div class="col-lg-3">
+          <div class="gk-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">Filters</h5>
+              <button id="resetFiltersBtn" class="btn btn-link text-success p-0 small text-decoration-none">Reset</button>
+            </div>
+
+            <!-- Service Filter -->
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Service</label>
+              <select id="filterService" class="form-select form-select-sm">
+                <option value="all">All Services</option>
+              </select>
+            </div>
+
+            <!-- District / City Filter -->
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">District / City</label>
+              <select id="filterDistrict" class="form-select form-select-sm">
+                <option value="all">All Districts</option>
+                <option value="South Delhi">South Delhi</option>
+                <option value="East Delhi">East Delhi</option>
+                <option value="Central Delhi">Central Delhi</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Bengaluru Urban">Bengaluru</option>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Pune">Pune</option>
+              </select>
+            </div>
+
+            <!-- Minimum Rating Filter -->
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Minimum Rating</label>
+              <select id="filterRating" class="form-select form-select-sm">
+                <option value="">Any Rating</option>
+                <option value="4.5">4.5 ★ & above</option>
+                <option value="4.8">4.8 ★ & above</option>
+                <option value="5.0">5.0 ★ only</option>
+              </select>
+            </div>
+
+            <!-- Experience Filter -->
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Minimum Experience</label>
+              <select id="filterExp" class="form-select form-select-sm">
+                <option value="">Any Experience</option>
+                <option value="3">3+ Years</option>
+                <option value="5">5+ Years</option>
+                <option value="8">8+ Years</option>
+              </select>
+            </div>
+
+            <!-- Max Rate -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between small fw-semibold mb-1">
+                <span>Max Daily Rate</span>
+                <span id="rateDisplay" class="text-success fw-bold">₹1000</span>
+              </div>
+              <input type="range" class="form-range" id="filterRate" min="200" max="1500" step="50" value="1000">
+            </div>
+
+            <!-- Availability Switch -->
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="filterAvailable" checked>
+              <label class="form-check-label small fw-semibold" for="filterAvailable">Available Now Only</label>
+            </div>
+
+            <button id="applyFiltersBtn" class="btn btn-brand-primary w-100 btn-sm">
+              <i class="bi bi-funnel-fill me-1"></i> Apply Filters
+            </button>
+          </div>
+        </div>
+
+        <!-- Helpers List Grid -->
+        <div class="col-lg-9">
+          <div class="row g-4" id="helpersGrid">
+            <div class="col-12 text-center py-5">
+              <div class="spinner-border text-success" role="status"></div>
+              <p class="text-muted small mt-2">Searching helpers database...</p>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <nav aria-label="Helpers pagination" class="mt-4" id="helpersPaginationNav">
+            <ul class="pagination justify-content-center" id="helpersPagination">
+              <!-- Dynamically rendered -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Universal Footer -->
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/helpers.js"></script>
+</body>
+</html>

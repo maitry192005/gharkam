@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earnings & Payouts | GharKaam</title>
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body class="bg-light">
+
+  <header id="navbar-placeholder"></header>
+
+  <div class="dashboard-container">
+    <aside class="dashboard-sidebar">
+      <div class="d-flex align-items-center gap-3 px-3 py-2 mb-2">
+        <div id="helperSideAvatarContainer"><div class="avatar-circle">GK</div></div>
+        <div class="overflow-hidden">
+          <div class="fw-bold text-truncate" id="helperSideName">Helper</div>
+          <div class="text-muted small">Service Partner</div>
+        </div>
+      </div>
+      <hr class="my-2 text-muted">
+      <nav class="d-flex flex-column gap-1">
+        <a href="/helper-dashboard.html" class="sidebar-nav-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="/helper-requests.html" class="sidebar-nav-item"><i class="bi bi-inbox-fill"></i> Requests & Jobs</a>
+        <a href="/helper-schedule.html" class="sidebar-nav-item"><i class="bi bi-calendar-week"></i> My Schedule</a>
+        <a href="/helper-services.html" class="sidebar-nav-item"><i class="bi bi-gear-wide-connected"></i> Services & Rates</a>
+        <a href="/helper-earnings.html" class="sidebar-nav-item active"><i class="bi bi-cash-stack text-success"></i> Earnings & Payouts</a>
+        <a href="/helper-reviews.html" class="sidebar-nav-item"><i class="bi bi-star-fill text-warning"></i> Customer Reviews</a>
+        <a href="/helper-profile-edit.html" class="sidebar-nav-item"><i class="bi bi-person-badge"></i> Profile Details</a>
+        <a href="/notifications.html" class="sidebar-nav-item"><i class="bi bi-bell"></i> Notifications</a>
+        <button type="button" class="sidebar-nav-item border-0 bg-transparent text-danger mt-3" onclick="api.logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+      </nav>
+    </aside>
+
+    <main class="dashboard-content">
+      <h2 class="h3 fw-bold mb-1">Earnings & Payout History</h2>
+      <p class="text-muted small mb-4">Track your gross revenue, settled payments, and monthly earnings breakdown.</p>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <div class="gk-card p-4 border-start border-4 border-success">
+            <span class="text-muted small fw-semibold">Total Revenue Earned</span>
+            <h2 class="display-6 fw-bold text-success mt-1" id="earnTotal">₹0</h2>
+            <div class="small text-muted">All-time settled customer income</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="gk-card p-4 border-start border-4 border-primary">
+            <span class="text-muted small fw-semibold">Settled Transactions</span>
+            <h2 class="display-6 fw-bold text-primary mt-1" id="earnTxCount">0</h2>
+            <div class="small text-muted">Completed job payouts</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Breakdown Card -->
+      <div class="gk-card p-4 mb-4">
+        <h5 class="fw-bold mb-3">Monthly Earnings Breakdown</h5>
+        <div id="monthlyBreakdownContainer" class="row g-2">
+          <div class="text-muted small">Loading monthly history...</div>
+        </div>
+      </div>
+
+      <!-- Recent Payments Table -->
+      <div class="gk-card p-4">
+        <h5 class="fw-bold mb-3">Recent Payout Transactions</h5>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small">
+              <tr>
+                <th>Invoice #</th>
+                <th>Booking Ref</th>
+                <th>Date</th>
+                <th>Payment Mode</th>
+                <th>Status</th>
+                <th class="text-end">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="earningsTableTbody">
+              <tr><td colspan="6" class="text-center py-4 text-muted small">Loading payments...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer id="footer-placeholder"></footer>
+
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/helper-earnings.js"></script>
+</body>
+</html>

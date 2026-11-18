@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Temporary / Cache files
+.cache/
+temp/
+*.tmp
+
+# Generated User Uploads & Invoices
+public/assets/uploads/invoices/*.pdf
+public/assets/uploads/idproofs/*
+!public/assets/uploads/idproofs/.gitkeep
+public/assets/uploads/profiles/*
+!public/assets/uploads/profiles/.gitkeep
+
+# Nested backup / original archive
+MOM web/
+
+

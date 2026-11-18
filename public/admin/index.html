@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Operations Portal | GharKaam</title>
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+  <style>
+    :root {
+      --admin-sidebar-width: 260px;
+    }
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .admin-sidebar {
+      width: var(--admin-sidebar-width);
+      background: #19362a;
+      color: #fff;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-sidebar-brand {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .admin-nav {
+      padding: 1rem 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .admin-nav-item:hover, .admin-nav-item.active {
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+      border-left: 4px solid var(--brand-accent, #e5a93c);
+    }
+    .admin-nav-item i {
+      font-size: 1.15rem;
+    }
+    .admin-main {
+      flex: 1;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    .admin-topbar {
+      height: 65px;
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .admin-content {
+      padding: 2rem;
+      flex: 1;
+    }
+    .admin-tab-pane {
+      display: none;
+    }
+    .admin-tab-pane.active {
+      display: block;
+    }
+    .stat-card-metric {
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .table-responsive {
+      background: #fff;
+      border-radius: 0.75rem;
+      border: 1px solid #e2e8f0;
+    }
+    .cursor-pointer {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-brand">
+        <img src="/assets/images/Gharkaam Logo.png" height="32" alt="GharKaam">
+        <div>
+          <div class="fw-bold fs-6">GharKaam Admin</div>
+          <div class="text-white-50 small" style="font-size: 11px;">Operations Console</div>
+        </div>
+      </div>
+
+      <nav class="admin-nav">
+        <a class="admin-nav-item active" data-tab="dashboard">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a class="admin-nav-item" data-tab="approvals">
+          <i class="bi bi-person-check-fill text-warning"></i> Helper Approvals
+          <span class="badge bg-danger rounded-pill ms-auto" id="pendingApprovalBadge">0</span>
+        </a>
+        <a class="admin-nav-item" data-tab="users">
+          <i class="bi bi-people-fill"></i> User Directory
+        </a>
+        <a class="admin-nav-item" data-tab="bookings">
+          <i class="bi bi-calendar-event-fill"></i> All Bookings
+        </a>
+        <a class="admin-nav-item" data-tab="services">
+          <i class="bi bi-grid-fill"></i> Services Catalogue
+        </a>
+        <a class="admin-nav-item" data-tab="messages">
+          <i class="bi bi-envelope-fill"></i> Inquiries & Messages
+          <span class="badge bg-warning text-dark rounded-pill ms-auto" id="unreadMessagesBadge">0</span>
+        </a>
+        <a class="admin-nav-item" data-tab="complaints">
+          <i class="bi bi-shield-exclamation text-danger"></i> Complaints
+          <span class="badge bg-danger rounded-pill ms-auto" id="openComplaintsBadge">0</span>
+        </a>
+        <a class="admin-nav-item" data-tab="reviews">
+          <i class="bi bi-star-fill text-warning"></i> Review Moderation
+        </a>
+        <a class="admin-nav-item" data-tab="coupons">
+          <i class="bi bi-ticket-perforated-fill"></i> Coupons & Promos
+        </a>
+      </nav>
+
+      <div class="p-3 border-top border-secondary border-opacity-25">
+        <a href="/" target="_blank" class="admin-nav-item p-2 mb-2 rounded text-white-50 hover-white">
+          <i class="bi bi-box-arrow-up-right"></i> View Live Site
+        </a>
+        <button type="button" class="btn btn-outline-light btn-sm w-100" onclick="api.logout()">
+          <i class="bi bi-box-arrow-right me-1"></i> Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Admin Workspace -->
+    <main class="admin-main">
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div class="d-flex align-items-center gap-3">
+          <h4 class="mb-0 fw-bold fs-5 text-dark" id="adminPageTitle">Executive Dashboard</h4>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="text-end d-none d-sm-block">
+            <div class="fw-semibold text-dark small" id="adminUserName">Administrator</div>
+            <div class="text-muted" style="font-size: 11px;">System Superadmin</div>
+          </div>
+          <div class="avatar-circle" style="width: 38px; height: 38px; background: #34775f;">AD</div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="admin-content">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="admin-tab-pane active">
+          <!-- Quick Stat Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="gk-card p-3">
+                <div class="text-muted small fw-semibold text-uppercase">Total Revenue</div>
+                <div class="stat-card-metric text-success mt-1" id="statRevenue">₹0</div>
+                <div class="text-muted small mt-1"><i class="bi bi-arrow-up-right text-success"></i> 100% Verified</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gk-card p-3">
+                <div class="text-muted small fw-semibold text-uppercase">Total Bookings</div>
+                <div class="stat-card-metric text-primary mt-1" id="statBookings">0</div>
+                <div class="text-muted small mt-1"><span id="statActiveBookings">0</span> active now</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gk-card p-3">
+                <div class="text-muted small fw-semibold text-uppercase">Verified Helpers</div>
+                <div class="stat-card-metric text-dark mt-1" id="statHelpers">0</div>
+                <div class="text-warning small mt-1 fw-semibold"><span id="statPendingHelpers">0</span> pending review</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="gk-card p-3">
+                <div class="text-muted small fw-semibold text-uppercase">Registered Customers</div>
+                <div class="stat-card-metric text-info mt-1" id="statCustomers">0</div>
+                <div class="text-muted small mt-1">Across multiple cities</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+              <div class="gk-card p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h6 class="fw-bold mb-0">Booking Activity (Last 6 Months)</h6>
+                  <span class="badge bg-light text-dark border">Monthly Volume</span>
+                </div>
+                <div style="height: 280px; position: relative;">
+                  <canvas id="monthlyBookingsChart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="gk-card p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h6 class="fw-bold mb-0">Booking Status Ratio</h6>
+                  <span class="badge bg-light text-dark border">Real-time</span>
+                </div>
+                <div style="height: 280px; position: relative;" class="d-flex align-items-center justify-content-center">
+                  <canvas id="statusDonutChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Approvals Quick Alert -->
+          <div class="card border-0 shadow-sm rounded-4 mb-4 p-4" style="background: linear-gradient(135deg, #eff5ef 0%, #fff 100%);">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div>
+                <h5 class="fw-bold mb-1 text-dark"><i class="bi bi-shield-check text-success me-2"></i>Helper Verification Queue</h5>
+                <p class="text-muted small mb-0">New domestic helpers have uploaded government ID proofs and are awaiting activation.</p>
+              </div>
+              <button class="btn btn-primary btn-sm px-3" onclick="adminSwitchTab('approvals')">
+                Open Approval Queue <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- TAB 2: HELPER APPROVALS -->
+        <section id="tab-approvals" class="admin-tab-pane">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Domestic Helper Approval Queue</h5>
+              <p class="text-muted small mb-0">Verify government ID documents, service skillsets, and address before allowing helpers to receive jobs.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" onclick="loadPendingHelpers()">
+              <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Helper Name</th>
+                  <th>Contact Info</th>
+                  <th>Location</th>
+                  <th>Services & Exp</th>
+                  <th>ID Proof</th>
+                  <th class="text-end">Verification Actions</th>
+                </tr>
+              </thead>
+              <tbody id="pendingHelpersTableBody">
+                <tr><td colspan="6" class="text-center py-4 text-muted">Loading pending queue...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- TAB 3: USER DIRECTORY -->
+        <section id="tab-users" class="admin-tab-pane">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Platform User Directory</h5>
+              <p class="text-muted small mb-0">Search, monitor and manage customers, domestic helpers, and platform moderators.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <select class="form-select form-select-sm" id="userRoleFilter" style="width: 140px;">
+                <option value="all">All Roles</option>
+                <option value="customer">Customers</option>
+                <option value="helper">Helpers</option>
+                <option value="admin">Admins</option>
+              </select>
+              <select class="form-select form-select-sm" id="userStatusFilter" style="width: 140px;">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="suspended">Suspended</option>
+              </select>
+              <input type="text" class="form-control form-control-sm" id="userSearchInput" placeholder="Search name/email..." style="width: 200px;">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Contact</th>
+                  <th>City / State</th>
+                  <th>Joined</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr><td colspan="7" class="text-center py-4 text-muted">Loading users...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- TAB 4: ALL BOOKINGS -->
+        <section id="tab-bookings" class="admin-tab-pane">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Master Bookings Log</h5>
+              <p class="text-muted small mb-0">Track real-time home service requests, fulfillment stages, and payouts.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <select class="form-select form-select-sm" id="bookingStatusFilter" style="width: 160px;">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="in-progress">In-Progress</option>
+                <option value="completed">Completed</option>
+                <option value="declined">Declined</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button class="btn btn-outline-secondary btn-sm" onclick="loadAdminBookings()">
+                <i class="bi bi-arrow-clockwise"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Booking #</th>
+                  <th>Customer</th>
+                  <th>Helper</th>
+                  <th>Service(s)</th>
+                  <th>Schedule</th>
+                  <th>Amount</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminBookingsTableBody">
+                <tr><td colspan="8" class="text-center py-4 text-muted">Loading bookings...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- TAB 5: SERVICES CATALOGUE -->
+        <section id="tab-services" class="admin-tab-pane">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Home Services Catalogue</h5>
+              <p class="text-muted small mb-0">Manage services, hourly/daily base rates, descriptions, and feature icons.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openAddServiceModal()">
+              <i class="bi bi-plus-lg me-1"></i> Add New Service
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Service</th>
+                  <th>Category</th>
+                  <th>Base Rate</th>
+                  <th>Unit</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminServicesTableBody">
+                <tr><td colspan="6" class="text-center py-4 text-muted">Loading catalogue...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- TAB 6: INQUIRIES & MESSAGES -->
+        <section id="tab-messages" class="admin-tab-pane">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Public Inquiries & Contact Forms</h5>
+              <p class="text-muted small mb-0">Messages submitted through the public Contact page.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" onclick="loadContactMessages()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Sender</th>
+                  <th>Subject</th>
+                  <th>Message</th>
+                  <th>Received</th>
+                  <th>Status</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody id="messagesTableBody">
+                <tr><td colspan="6" class="text-center py-4 text-muted">Loading messages...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- TAB 7: COMPLAINTS -->
+        <section id="tab-complaints" class="admin-tab-pane">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Customer & Helper Complaints</h5>
+              <p class="text-muted small mb-0">Dispute resolution and quality escalations.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" onclick="loadComplaints()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Complaint By</th>
+                  <th>Booking ID</th>
+                  <th>Reason</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th class="text-end">Resolution</th>
+                </tr>
+              </thead>
+              <tbody id="complaintsTableBody">
+                <tr><td colspan="7" class="text-center py-4 text-muted">Loading complaints...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- TAB 8: REVIEW MODERATION -->
+        <section id="tab-reviews" class="admin-tab-pane">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Customer Reviews Moderation</h5>
+              <p class="text-muted small mb-0">Ensure community reviews comply with platform civility and accuracy guidelines.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" onclick="loadReviewModeration()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Customer</th>
+                  <th>Helper</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
+                  <th>Status</th>
+                  <th class="text-end">Moderation</th>
+                </tr>
+              </thead>
+              <tbody id="adminReviewsTableBody">
+                <tr><td colspan="6" class="text-center py-4 text-muted">Loading reviews...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- TAB 9: COUPONS & PROMOTIONS -->
+        <section id="tab-coupons" class="admin-tab-pane">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+              <h5 class="fw-bold mb-1">Discount Coupons & Offers</h5>
+              <p class="text-muted small mb-0">Create promotional codes for customers to apply during booking checkout.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openCreateCouponModal()">
+              <i class="bi bi-plus-lg me-1"></i> Create Coupon
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Code</th>
+                  <th>Discount Type</th>
+                  <th>Value</th>
+                  <th>Min Order</th>
+                  <th>Max Cap</th>
+                  <th>Valid Till</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="couponsTableBody">
+                <tr><td colspan="8" class="text-center py-4 text-muted">Loading coupons...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+
+  <!-- MODAL: HELPER VERIFICATION & ID PROOF VIEWER -->
+  <div class="modal fade" id="helperVerifyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title fw-bold"><i class="bi bi-shield-check text-success me-2"></i>Helper Verification & ID Audit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <h6 class="fw-bold text-muted small text-uppercase mb-3">Partner Information</h6>
+              <div class="mb-2"><strong>Name:</strong> <span id="vHelperName">-</span></div>
+              <div class="mb-2"><strong>Phone:</strong> <span id="vHelperPhone">-</span></div>
+              <div class="mb-2"><strong>Email:</strong> <span id="vHelperEmail">-</span></div>
+              <div class="mb-2"><strong>Location:</strong> <span id="vHelperAddress">-</span></div>
+              <div class="mb-2"><strong>Experience:</strong> <span id="vHelperExperience">-</span> years</div>
+              <div class="mb-2"><strong>Languages:</strong> <span id="vHelperLanguages">-</span></div>
+              <div class="mb-2"><strong>Services Offered:</strong> <div id="vHelperServices" class="mt-1"></div></div>
+              <div class="mb-2"><strong>Bio:</strong> <p class="text-muted small fst-italic mt-1" id="vHelperBio">-</p></div>
+            </div>
+            <div class="col-md-6 text-center">
+              <h6 class="fw-bold text-muted small text-uppercase mb-3">Submitted ID Document (Aadhaar / Voter ID)</h6>
+              <div class="border rounded-3 p-2 bg-light mb-2" style="min-height: 220px; display: flex; align-items: center; justify-content: center;">
+                <img id="vHelperIdImage" src="" class="img-fluid rounded" style="max-height: 300px; object-fit: contain;" alt="ID Proof">
+              </div>
+              <a id="vHelperIdDownloadLink" href="" target="_blank" class="btn btn-outline-secondary btn-sm mb-3">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Open Original Document
+              </a>
+
+              <div class="border-top pt-3 text-start">
+                <label class="form-label small fw-semibold">Rejection Note (if turning down):</label>
+                <input type="text" class="form-control form-control-sm" id="vRejectReason" placeholder="e.g. ID blurry or mismatch in address">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <input type="hidden" id="vHelperProfileId">
+          <button type="button" class="btn btn-outline-danger" onclick="submitRejectHelper()">
+            <i class="bi bi-x-circle me-1"></i> Reject Helper
+          </button>
+          <button type="button" class="btn btn-success px-4" onclick="submitApproveHelper()">
+            <i class="bi bi-check-circle-fill me-1"></i> Approve & Activate Partner
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: ADD / EDIT SERVICE -->
+  <div class="modal fade" id="serviceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0">
+        <form id="serviceForm">
+          <div class="modal-header bg-light">
+            <h5 class="modal-title fw-bold" id="serviceModalTitle">Add Service</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <input type="hidden" id="serviceId">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Service Name *</label>
+                <input type="text" class="form-control" id="sName" required placeholder="e.g. Cooking & Meal Prep">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Category *</label>
+                <select class="form-select" id="sCategory" required>
+                  <option value="Home Cooking">Home Cooking</option>
+                  <option value="House Cleaning">House Cleaning</option>
+                  <option value="Kitchen Assistance">Kitchen Assistance</option>
+                  <option value="Laundry & Ironing">Laundry & Ironing</option>
+                  <option value="Maintenance & Repair">Maintenance & Repair</option>
+                  <option value="Family & Caregiving">Family & Caregiving</option>
+                  <option value="Special Services">Special Services</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-semibold">Bootstrap Icon *</label>
+                <input type="text" class="form-control" id="sIcon" required placeholder="e.g. bi-fire">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-semibold">Base Rate (₹) *</label>
+                <input type="number" class="form-control" id="sBaseRate" required min="100">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-semibold">Unit Type *</label>
+                <select class="form-select" id="sUnit">
+                  <option value="day">per day</option>
+                  <option value="visit">per visit</option>
+                  <option value="month">per month</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label small fw-semibold">Short Description *</label>
+                <textarea class="form-control" id="sDescription" rows="2" required></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label small fw-semibold">What's Included (one item per line)</label>
+                <textarea class="form-control" id="sIncludes" rows="3" placeholder="Breakfast, lunch, and dinner preparation&#10;Kitchen stove wipe down&#10;Dietary preference accommodation"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4" id="saveServiceBtn">Save Service</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: CREATE COUPON -->
+  <div class="modal fade" id="couponModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0">
+        <form id="couponForm">
+          <div class="modal-header bg-light">
+            <h5 class="modal-title fw-bold">Create Promotional Coupon</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label small fw-semibold">Coupon Code *</label>
+                <input type="text" class="form-control text-uppercase" id="cCode" required placeholder="e.g. DIWALI30">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Discount Type *</label>
+                <select class="form-select" id="cDiscountType">
+                  <option value="percentage">Percentage (%)</option>
+                  <option value="fixed">Flat (₹)</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Discount Value *</label>
+                <input type="number" class="form-control" id="cDiscountValue" required min="1">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Min Booking Amount (₹)</label>
+                <input type="number" class="form-control" id="cMinBookingAmount" value="500">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Max Discount Cap (₹)</label>
+                <input type="number" class="form-control" id="cMaxDiscount" value="300">
+              </div>
+              <div class="col-12">
+                <label class="form-label small fw-semibold">Valid Until</label>
+                <input type="date" class="form-control" id="cValidTo">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4" id="saveCouponBtn">Create Coupon</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

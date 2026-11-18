@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GharKaam | Trusted Domestic Help Marketplace</title>
+  <meta name="description" content="Find and book verified domestic cooks, cleaners, utensil maids, plumbers, and electricians across Indian households. Transparent rates, ID verified.">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  
+  <meta property="og:title" content="GharKaam - Domestic Help for Every Indian Household">
+  <meta property="og:description" content="Verified cooks, cleaners, utensil maids, plumbers, and electricians at your doorstep.">
+  <meta property="og:image" content="/assets/images/og-image.jpg">
+
+  <!-- Bootstrap 5.3 CSS + Icons -->
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body>
+
+  <!-- Universal Navbar -->
+  <header id="navbar-placeholder"></header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="py-5" style="background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-cream) 100%);">
+      <div class="container py-lg-4">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-7">
+            <span class="badge bg-success bg-opacity-10 text-success fw-semibold px-3 py-2 rounded-pill mb-3">
+              <i class="bi bi-shield-fill-check me-1"></i> 100% Police & ID Verified Helpers
+            </span>
+            <h1 class="display-4 fw-bolder mb-3" data-i18n="heroTitle">
+              Trusted Domestic Help for Every Indian Household
+            </h1>
+            <p class="lead text-muted mb-4" data-i18n="heroSubtitle">
+              Verified cooks, cleaners, utensil maids, plumbers, and electricians at your doorstep. Transparent daily rates, zero hassle, and verified safety.
+            </p>
+
+            <!-- Quick Service Selector & Search -->
+            <div class="p-3 gk-card mb-4">
+              <form id="heroSearchForm" class="row g-2 align-items-center">
+                <div class="col-md-5">
+                  <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" id="heroKeyword" class="form-control border-start-0 ps-0" placeholder="E.g. Cook, Cleaning, Plumber...">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <select id="heroDistrict" class="form-select">
+                    <option value="all">All Locations</option>
+                    <option value="South Delhi">South Delhi</option>
+                    <option value="East Delhi">East Delhi</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Bengaluru Urban">Bengaluru</option>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <button type="submit" class="btn btn-brand-primary w-100 fw-bold">
+                    <i class="bi bi-search me-1"></i> Search
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Value propositions badges -->
+            <div class="d-flex flex-wrap gap-4 text-muted small fw-semibold">
+              <div><i class="bi bi-check2-circle text-success me-1"></i> Background Screened</div>
+              <div><i class="bi bi-check2-circle text-success me-1"></i> Same-day or Planned</div>
+              <div><i class="bi bi-check2-circle text-success me-1"></i> Pay Online or Cash</div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="position-relative">
+              <img src="/assets/images/hero-home.jpg" alt="Warm Indian Home" class="img-fluid rounded-4 shadow-lg w-100" style="object-fit: cover; max-height: 480px;" loading="lazy">
+              <!-- Floating Trust Badge Card -->
+              <div class="position-absolute bottom-0 start-0 translate-middle-y ms-3 p-3 gk-card shadow-lg bg-white" style="max-width: 240px; border-left: 4px solid var(--brand-primary);">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  <div class="stars-rating">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                  </div>
+                  <span class="fw-bold small text-dark">4.9 / 5</span>
+                </div>
+                <div class="small text-muted" style="font-size: 0.8rem;">Loved by 10,000+ happy households across India</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE STATS BANNER -->
+    <section class="py-4 border-top border-bottom bg-white">
+      <div class="container">
+        <div class="row g-4 text-center" id="liveStatsContainer">
+          <div class="col-6 col-md-3">
+            <div class="display-6 fw-bold text-success" id="statHelpers">50+</div>
+            <div class="text-muted small fw-semibold text-uppercase" data-i18n="statsHelpers">Verified Helpers</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="display-6 fw-bold text-success" id="statJobs">250+</div>
+            <div class="text-muted small fw-semibold text-uppercase" data-i18n="statsJobs">Completed Bookings</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="display-6 fw-bold text-success" id="statCities">12+</div>
+            <div class="text-muted small fw-semibold text-uppercase" data-i18n="statsCities">Cities & Districts</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="display-6 fw-bold text-success" id="statRating">4.9 ★</div>
+            <div class="text-muted small fw-semibold text-uppercase" data-i18n="statsRating">Average Rating</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES PREVIEW SECTION -->
+    <section class="py-5">
+      <div class="container py-lg-3">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+          <div>
+            <span class="text-uppercase small fw-bold text-success tracking-wider">Our Catalogue</span>
+            <h2 class="h2 fw-bold mt-1">Explore Domestic Services</h2>
+          </div>
+          <a href="/services.html" class="btn btn-brand-outline btn-sm d-none d-md-inline-flex align-items-center gap-1">
+            View All Services <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="row g-4" id="homeServicesGrid">
+          <!-- Populated from DB via index.js -->
+          <div class="col-12 text-center py-5">
+            <div class="spinner-border text-success" role="status"></div>
+            <p class="text-muted small mt-2">Loading services catalogue...</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-4 d-md-none">
+          <a href="/services.html" class="btn btn-brand-outline w-100">View All Services</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="py-5" style="background-color: var(--brand-light);">
+      <div class="container py-lg-3">
+        <div class="text-center max-w-700 mx-auto mb-5">
+          <span class="text-uppercase small fw-bold text-success">Simple 3-Step Process</span>
+          <h2 class="h2 fw-bold mt-1" data-i18n="howItWorks">How GharKaam Works</h2>
+          <p class="text-muted">We have streamlined domestic hiring to bring dignity, safety, and reliability into your home.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="gk-card p-4 h-100 text-center">
+              <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 bg-success bg-opacity-10 text-success" style="width: 64px; height: 64px;">
+                <i class="bi bi-grid-fill fs-3"></i>
+              </div>
+              <h5 class="fw-bold" data-i18n="step1">1. Select Services</h5>
+              <p class="text-muted small mb-0" data-i18n="step1Desc">
+                Choose from cooking, deep cleaning, laundry, utensil dishwashing, repairs, and caregiving.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="gk-card p-4 h-100 text-center">
+              <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 bg-success bg-opacity-10 text-success" style="width: 64px; height: 64px;">
+                <i class="bi bi-person-check-fill fs-3"></i>
+              </div>
+              <h5 class="fw-bold" data-i18n="step2">2. Choose Verified Helper</h5>
+              <p class="text-muted small mb-0" data-i18n="step2Desc">
+                Browse government ID-verified local helpers with authentic customer reviews and transparent daily rates.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="gk-card p-4 h-100 text-center">
+              <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 bg-success bg-opacity-10 text-success" style="width: 64px; height: 64px;">
+                <i class="bi bi-calendar2-check-fill fs-3"></i>
+              </div>
+              <h5 class="fw-bold" data-i18n="step3">3. Book & Relax</h5>
+              <p class="text-muted small mb-0" data-i18n="step3Desc">
+                Pick your preferred dates, pay securely online or after service, and enjoy a clean, well-cared-for home.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP-RATED HELPERS SECTION -->
+    <section class="py-5">
+      <div class="container py-lg-3">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+          <div>
+            <span class="text-uppercase small fw-bold text-success">Verified Professionals</span>
+            <h2 class="h2 fw-bold mt-1">Top-Rated Helpers Near You</h2>
+          </div>
+          <a href="/helpers.html" class="btn btn-brand-outline btn-sm d-none d-md-inline-flex align-items-center gap-1">
+            Browse All Helpers <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="row g-4" id="homeHelpersGrid">
+          <!-- Populated from DB via index.js -->
+          <div class="col-12 text-center py-4">
+            <div class="spinner-border text-success" role="status"></div>
+            <p class="text-muted small mt-2">Loading top rated helpers...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REAL CUSTOMER TESTIMONIALS -->
+    <section class="py-5 bg-white border-top border-bottom">
+      <div class="container py-lg-3">
+        <div class="text-center mb-5">
+          <span class="text-uppercase small fw-bold text-success">Verified Experiences</span>
+          <h2 class="h2 fw-bold mt-1">What Families Say About GharKaam</h2>
+        </div>
+
+        <div class="row g-4" id="homeReviewsContainer">
+          <div class="col-md-4">
+            <div class="gk-card p-4 h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="stars-rating mb-2">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p class="text-muted small fst-italic mb-3">
+                  "Sunita ji came to cook for our family of 4 in South Delhi. Her food tastes completely like home and she is so punctual. Best home services platform!"
+                </p>
+              </div>
+              <div class="d-flex align-items-center gap-2 pt-2 border-top">
+                <div class="avatar-circle">AV</div>
+                <div>
+                  <div class="fw-bold small">Ananya Verma</div>
+                  <div class="text-muted small" style="font-size: 0.75rem;">Hauz Khas, Delhi &bull; Verified Customer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="gk-card p-4 h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="stars-rating mb-2">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p class="text-muted small fst-italic mb-3">
+                  "Rajesh fixed our bathroom plumbing leak and main switchboard wiring within 2 hours. Professional, well-equipped, and completely transparent rates."
+                </p>
+              </div>
+              <div class="d-flex align-items-center gap-2 pt-2 border-top">
+                <div class="avatar-circle">RK</div>
+                <div>
+                  <div class="fw-bold small">Rahul Khanna</div>
+                  <div class="text-muted small" style="font-size: 0.75rem;">Bandra West, Mumbai &bull; Verified Customer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="gk-card p-4 h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="stars-rating mb-2">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p class="text-muted small fst-italic mb-3">
+                  "Having verified ID proof before allowing someone in the house gives total peace of mind. Lakshmi did a fantastic job with cleaning and laundry!"
+                </p>
+              </div>
+              <div class="d-flex align-items-center gap-2 pt-2 border-top">
+                <div class="avatar-circle">PS</div>
+                <div>
+                  <div class="fw-bold small">Priya Sharma</div>
+                  <div class="text-muted small" style="font-size: 0.75rem;">Whitefield, Bengaluru &bull; Verified Customer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA CALL TO ACTION -->
+    <section class="py-5" style="background: linear-gradient(135deg, var(--brand-dark) 0%, #15382b 100%); color: white;">
+      <div class="container py-lg-4 text-center">
+        <h2 class="display-6 fw-bold text-white mb-3">Ready to make your home chores effortless?</h2>
+        <p class="lead text-light-50 mb-4 mx-auto" style="max-width: 600px;">
+          Join thousands of happy homeowners and verified service providers. Sign up in less than 2 minutes.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="/register.html" class="btn btn-warning fw-bold px-4 py-2">
+            Get Started Now
+          </a>
+          <a href="/helpers.html" class="btn btn-outline-light px-4 py-2">
+            Browse Helpers
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Universal Footer -->
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/index.js"></script>
+</body>
+</html>

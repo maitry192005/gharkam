@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Registration | GharKaam</title>
+  <meta name="description" content="Register as a customer on GharKaam to find background-verified domestic help for your home.">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body class="bg-light">
+
+  <!-- Universal Navbar -->
+  <header id="navbar-placeholder"></header>
+
+  <main class="py-5">
+    <div class="container" style="max-width: 780px;">
+      <div class="gk-card p-4 p-md-5 shadow-sm">
+        <div class="text-center mb-4">
+          <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill mb-2">Customer Account</span>
+          <h2 class="h3 fw-bold mb-1">Create Your Household Account</h2>
+          <p class="text-muted small">
+            Sign up today and get <strong class="text-success">₹50 in welcome credits</strong> instantly added to your wallet!
+          </p>
+        </div>
+
+        <div id="regAlert" class="alert d-none mb-4" role="alert"></div>
+
+        <form id="customerRegForm" novalidate>
+          <!-- Section 1: Account Basics -->
+          <h5 class="fw-bold border-bottom pb-2 mb-3 text-secondary">1. Personal Information</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label for="fullName" class="form-label small fw-semibold">Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="fullName" required placeholder="e.g. Ananya Verma">
+              <div class="invalid-feedback">Please enter your full name.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="username" class="form-label small fw-semibold">Username <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="username" required pattern="^[a-zA-Z0-9_]{3,30}$" placeholder="e.g. ananya_v">
+              <div class="form-text small">3-30 characters, letters, numbers, and underscores only.</div>
+              <div class="invalid-feedback">Username must be at least 3 alphanumeric characters.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="email" class="form-label small fw-semibold">Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="email" required placeholder="name@example.com">
+              <div class="invalid-feedback">Please provide a valid email.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="phone" class="form-label small fw-semibold">Phone Number <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text bg-light small">+91</span>
+                <input type="tel" class="form-control" id="phone" required pattern="^[6-9]\d{9}$" placeholder="98XXXXXXXX">
+              </div>
+              <div class="invalid-feedback">Please enter a valid 10-digit Indian mobile number.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="gender" class="form-label small fw-semibold">Gender</label>
+              <select class="form-select" id="gender">
+                <option value="prefer-not-to-say">Prefer not to say</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="referredBy" class="form-label small fw-semibold">Referral Code (Optional)</label>
+              <input type="text" class="form-control" id="referredBy" placeholder="e.g. RAHU5521">
+              <div class="form-text small">Have a friend's code? Enter to unlock bonus credits.</div>
+            </div>
+          </div>
+
+          <!-- Section 2: Security Credentials -->
+          <h5 class="fw-bold border-bottom pb-2 mb-3 text-secondary">2. Account Security</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label for="password" class="form-label small fw-semibold">Password <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" id="password" required minlength="6" placeholder="At least 6 characters">
+              <div class="invalid-feedback">Password must be at least 6 characters.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="confirmPassword" class="form-label small fw-semibold">Confirm Password <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" id="confirmPassword" required placeholder="Re-enter password">
+              <div class="invalid-feedback" id="confirmPasswordFeedback">Passwords do not match.</div>
+            </div>
+          </div>
+
+          <!-- Section 3: Household Address -->
+          <h5 class="fw-bold border-bottom pb-2 mb-3 text-secondary">3. Residence Address</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label for="state" class="form-label small fw-semibold">State / UT <span class="text-danger">*</span></label>
+              <select class="form-select" id="state" required>
+                <option value="">Select State</option>
+              </select>
+              <div class="invalid-feedback">Please choose your state.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="district" class="form-label small fw-semibold">District / City <span class="text-danger">*</span></label>
+              <select class="form-select" id="district" required disabled>
+                <option value="">Select State first</option>
+              </select>
+              <div class="invalid-feedback">Please choose your district.</div>
+            </div>
+
+            <div class="col-12">
+              <label for="addressLine" class="form-label small fw-semibold">Street Address / Society Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="addressLine" required placeholder="Flat / House No, Building, Road name">
+              <div class="invalid-feedback">Please enter your address.</div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="landmark" class="form-label small fw-semibold">Landmark</label>
+              <input type="text" class="form-control" id="landmark" placeholder="Near Metro, Park, etc.">
+            </div>
+
+            <div class="col-md-4">
+              <label for="pincode" class="form-label small fw-semibold">Pincode <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="pincode" required pattern="^[1-9][0-9]{5}$" placeholder="6-digit pincode">
+              <div class="invalid-feedback">Please enter a valid 6-digit postal pincode.</div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="houseType" class="form-label small fw-semibold">House Type</label>
+              <select class="form-select" id="houseType">
+                <option value="Apartment">Apartment</option>
+                <option value="Independent House">Independent House</option>
+                <option value="Villa">Villa</option>
+                <option value="Studio">Studio</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+            <label class="form-check-label small text-muted" for="termsCheck">
+              I agree to the <a href="/terms.html" target="_blank" class="text-success">Terms of Service</a> and <a href="/privacy.html" target="_blank" class="text-success">Privacy Policy</a> of GharKaam.
+            </label>
+            <div class="invalid-feedback">You must accept the terms before creating an account.</div>
+          </div>
+
+          <button type="submit" id="regSubmitBtn" class="btn btn-brand-primary w-100 py-2 fw-bold">
+            <span id="btnText"><i class="bi bi-person-plus-fill me-1"></i> Complete Registration</span>
+            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+          </button>
+        </form>
+
+        <div class="mt-4 pt-3 border-top text-center small text-muted">
+          Already registered? <a href="/login.html" class="text-success fw-bold text-decoration-none">Sign In here</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Universal Footer -->
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/customer-registration.js"></script>
+</body>
+</html>

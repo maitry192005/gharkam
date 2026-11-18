@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>(function(){if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){for(var r of rs){r.unregister();}});}if("caches" in window){caches.keys().then(function(ks){for(var k of ks){caches.delete(k);}});}})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequently Asked Questions | GharKaam</title>
+  <meta name="description" content="Answers to common questions about booking domestic help, background checks, daily rates, cancellations, and helper partner verification.">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link href="/css/bootstrap.min.css?v=3" rel="stylesheet">
+  <link href="/css/bootstrap-icons.min.css?v=3" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=3">
+</head>
+<body>
+
+  <!-- Universal Navbar -->
+  <header id="navbar-placeholder"></header>
+
+  <main class="py-5">
+    <div class="container" style="max-width: 900px;">
+      <!-- Page Header -->
+      <div class="text-center mb-5">
+        <span class="badge bg-success bg-opacity-10 text-success fw-semibold px-3 py-2 rounded-pill mb-2">Help Center</span>
+        <h1 class="display-5 fw-bold">Frequently Asked Questions</h1>
+        <p class="lead text-muted">
+          Everything you need to know about booking, verified safety, payments, and cancellations on GharKaam.
+        </p>
+
+        <!-- Search Bar for FAQs -->
+        <div class="input-group mt-4 mx-auto" style="max-width: 500px;">
+          <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+          <input type="text" id="faqSearchInput" class="form-control border-start-0 ps-0" placeholder="Type a keyword, e.g. payment, verify, cancel...">
+        </div>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="accordion accordion-flush gk-card p-3 p-lg-4" id="faqAccordion">
+        <!-- Q1 -->
+        <div class="accordion-item border-bottom faq-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              How does GharKaam verify the helpers listed on the platform?
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted small">
+              Every helper must submit a government-issued identity proof (Aadhaar, Voter ID, or Driving License) alongside their permanent local address. Our compliance officers review these documents, conduct background screening, and only approve profiles meeting our safety criteria.
+            </div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="accordion-item border-bottom faq-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Can I pay in cash after the service is completed?
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted small">
+              Yes, absolutely! At checkout you can select "Pay after service (Cash)". You pay zero advance rupees. Once your helper finishes their duties to your complete satisfaction, you pay the agreed total directly in cash.
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="accordion-item border-bottom faq-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              What is your cancellation and refund policy?
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted small">
+              You can cancel any booking free of charge at any time before the helper begins work. If you paid online via Razorpay or used wallet credits, the full amount is instantly refunded back to your account without deductions.
+            </div>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="accordion-item border-bottom faq-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Can I request multiple services with a single helper?
+            </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted small">
+              Yes! Many of our versatile helpers offer multiple capabilities, such as Cooking + Cleaning or Cleaning + Utensil Washing. You can select all relevant services in the booking wizard, and our pricing calculator will compute an itemized subtotal.
+            </div>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="accordion-item border-bottom faq-item">
+          <h2 class="accordion-header" id="headingFive">
+            <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              How do promo coupons and wallet rewards work?
+            </button>
+          </h2>
+          <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted small">
+              When you sign up, you automatically receive a ₹50 welcome reward credited to your wallet. You also earn ₹50 whenever a friend signs up using your personal referral code. You can apply active promo coupons (e.g. <code>WELCOME50</code>) at checkout to deduct additional savings.
+            </div>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="accordion-item border-bottom faq-item">
+          <h2 class="accordion-header" id="headingSix">
+            <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+              How do I join as a helper or service partner?
+            </button>
+          </h2>
+          <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+            <div class="accordion-body text-muted small">
+              Click on "Sign Up" and choose "Join as a Helper". Fill in your personal details, select the services you wish to offer with your preferred daily rates, and upload your Aadhaar/Voter ID card photo. Our admin team will verify your documents within 24 hours.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Still have questions -->
+      <div class="text-center mt-5">
+        <p class="text-muted mb-3">Still have a question that isn't answered here?</p>
+        <a href="/contact.html" class="btn btn-brand-primary">Contact Customer Support</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Universal Footer -->
+  <footer id="footer-placeholder"></footer>
+
+  <!-- Scripts -->
+  <script src="/js/bootstrap.bundle.min.js?v=3"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script>
+    // FAQ live search
+    document.getElementById('faqSearchInput')?.addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.faq-item').forEach(function(item) {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
